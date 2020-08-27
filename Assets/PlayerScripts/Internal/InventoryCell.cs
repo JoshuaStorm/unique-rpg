@@ -1,24 +1,24 @@
 ﻿namespace PlayerScripts.Internal
 {
+
     internal sealed class InventoryCell
     {
-        private string itemName; // TODO: make this item behavior type not just item name
-
         public InventoryCell()
         {
-            this.itemName = null;
+            this.InventoryItem = null;
         }
 
-        public bool IsEmpty => this.itemName == null;
+        public bool IsEmpty => this.InventoryItem == null;
+        public InventoryItem InventoryItem { get; private set; }
 
-        public void SetItem(string standinItemName)
+        public void SetItem(InventoryItem inventoryItem)
         {
-            this.itemName = standinItemName;
+            this.InventoryItem = inventoryItem;
         }
 
         public void RemoveItem()
         {
-            this.itemName = null;
+            this.InventoryItem = null;
         }
     }
 }

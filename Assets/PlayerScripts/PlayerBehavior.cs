@@ -22,7 +22,6 @@ public class PlayerBehavior : MonoBehaviour
     public void TakeHit(float damage)
     {
         this.currentHealth = Math.Max(this.currentHealth - damage, 0f);
-        Debug.Log($"Owwie, player character took damage CurrentHealth({this.currentHealth})");
     }
 
     public float GetCurrentHealth()

@@ -3,6 +3,7 @@
 public class ClickToMove : MonoBehaviour
 {
     public CharacterController characterController;
+    public MouseOverGuiElementHandler mouseOverGuiElementHandler;
     public AnimationClip moveAnimationClip;
     public AnimationClip standAnimationClip;
     public ClickToAttack clickToAttack;
@@ -23,7 +24,8 @@ public class ClickToMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (!this.mouseOverGuiElementHandler.IsMouseOverGuiElement() // Don't update move position if we're in inventory
+            && Input.GetMouseButton(0))
         {
             this.UpdateTerminalPosition();
         }
