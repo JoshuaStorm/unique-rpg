@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Assets.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PlayerScripts.Internal
 {
@@ -19,13 +21,14 @@ namespace PlayerScripts.Internal
                 inventoryRows.Add(new InventoryRow(width));
             }
             this.inventoryRows = inventoryRows;
-            UnityEngine.Debug.Log($"Making inventory with {this.inventoryRows.Count} rows");
         }
         
         // TODO: for now just assume every item is placed from the top-left corner
-        public bool ItemFits(int x, int y, int width, int height)
+        public bool DoesItemFit(int x, int y, ItemAttributes itemAttributes)
         {
             this.AssertValidRow(x, y);
+            var width = itemAttributes.Width;
+            var height = itemAttributes.Height;
             if (x + width > this.maxWidth || y + height >= this.maxHeight) 
             {
                 return false;
@@ -43,15 +46,15 @@ namespace PlayerScripts.Internal
         }
 
         //  This is hella inefficient, sure but like it's a 10x25 inventory. Maybe I'll make it 20x40 or something but it isn't like this needs to scale to 1000x1000
-        public bool TryPlaceItemAnywhere(int width, int height, string standinItemName)
+        public bool TryPlaceItemAnywhere(ItemAttributes itemAttributes)
         {
             for (var j = 0; j < this.maxHeight; j++)
             {
                 for (var i = 0; i < this.maxWidth; i++)
                 {
-                    if (this.ItemFits(i, j, width, height))
+                    if (this.DoesItemFit(i, j, itemAttributes))
                     {
-                        this.FillCellsWithItem(i, j, width, height, standinItemName);
+                        this.FillCellsWithItem(i, j, itemAttributes);
                         return true;
                     }
                 }
@@ -59,15 +62,15 @@ namespace PlayerScripts.Internal
             return false;
         }
 
-        public bool TryPlaceItem(int x, int y, int width, int height, string standinItemName)
+        public bool TryPlaceItem(int x, int y, ItemAttributes itemAttributes)
         {
             this.AssertValidRow(x, y);
-            if (!this.ItemFits(x, y, width, height))
+            if (!this.DoesItemFit(x, y, itemAttributes))
             {
                 return false;
             }
 
-            this.FillCellsWithItem(x, y, width, height, standinItemName);
+            this.FillCellsWithItem(x, y, itemAttributes);
             return true;
         }
 
@@ -84,18 +87,62 @@ namespace PlayerScripts.Internal
         public bool IsCellEmpty(int x, int y)
         {
             this.AssertValidRow(x, y);
+            return this.IsCellEmptyUnsafe(x, y);
+        }
+
+        public IOptional<ItemAttributes> TakeItemInCell(int x, int y)
+        {
+            this.AssertValidRow(x, y);
+            if (this.IsCellEmptyUnsafe(x, y))
+            {
+                return Optional.None<ItemAttributes>("No item found in cell");
+            }
+
+            // TODO: need to store more than just a string for the item in order to TakeItem, since I need to know which cells a single item is actually taking up
+
+            var item = this.RemoveItemFromCellUnsafe(x, y);
+            return Optional.Some(item);
+        }
+
+        private ItemAttributes RemoveItemFromCellUnsafe(int x, int y)
+        {
+            var clickedCell = this.inventoryRows[y].GetCell(x);
+            var inventoryItem = clickedCell.InventoryItem;
+            foreach (var cell in inventoryItem.CellsFilled)
+            {
+                cell.RemoveItem();
+            }
+
+            return inventoryItem.ItemAttributes;
+        }
+
+        private bool IsCellEmptyUnsafe(int x, int y)
+        {
             return this.inventoryRows[y].IsCellEmpty(x: x);
         }
 
-        private void FillCellsWithItem(int x, int y, int width, int height, string standinItemName)
+        private void FillCellsWithItem(int x, int y, ItemAttributes itemAttributes)
         {
+            var height = itemAttributes.Height;
+            var width = itemAttributes.Width;
+            var cellsItemIsFilling = new List<InventoryCell>();
             for (var j = 0; j < height; j++)
             {
                 var inventoryRow = this.inventoryRows[y+j];
                 for (var i = 0; i < width; i++)
                 {
-                    UnityEngine.Debug.Log($"Filling Inventory ({x+i},{y+j}) = {standinItemName}");
-                    inventoryRow.GetCell(x+i).SetItem(standinItemName);
+                    var cell = inventoryRow.GetCell(x + i);
+                    cellsItemIsFilling.Add(cell);
+                }
+            }
+
+            var inventoryItem = new InventoryItem(itemAttributes, cellsItemIsFilling);
+            for (var j = 0; j < height; j++)
+            {
+                var inventoryRow = this.inventoryRows[y+j];
+                for (var i = 0; i < width; i++)
+                {
+                    inventoryRow.GetCell(x + i).SetItem(inventoryItem);
                 }
             }
         }

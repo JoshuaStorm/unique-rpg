@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 503574637}
   - component: {fileID: 503574639}
   - component: {fileID: 503574640}
+  - component: {fileID: 503574642}
   - component: {fileID: 503574641}
   m_Layer: 0
   m_Name: GUI
@@ -170,7 +171,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -64.26205, y: -28.66167, z: -44.366676}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1457469940}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -211,12 +213,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 503574636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9a49c815d0b87d4bab7fc2d115f87c5, type: 3}
+  m_Script: {fileID: 11500000, guid: d705f02a9b54d334db5b6d224c4a4c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryCellImage: {fileID: 2800000, guid: 18f129a5b7c1d9e4c8b2600afe0874cb, type: 3}
-  filledInventoryCellImage: {fileID: 2800000, guid: 3664508be89502a43b170e1730de57eb, type: 3}
-  inventoryBehavior: {fileID: 1636773441}
+--- !u!114 &503574642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503574636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b70c53231ae5464392ed34a3dc2c2c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &539848230 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100016, guid: a2cb09cf998faef4fb7887e15c3608c1, type: 3}
@@ -399,7 +410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb1d58b20297704da3d9a43281c5e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 
+  ItemTexture: {fileID: 2800000, guid: f61bbb6023b3e934fbe1e3aec8186a9b, type: 3}
+  ItemName: Spear
+  Height: 3
+  Width: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,6 +951,54 @@ PrefabInstance:
       objectReference: {fileID: -5252816984213320552, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bc803c4bf46dcc48b0d9035951ec07a, type: 3}
+--- !u!1 &1457469939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1457469940}
+  - component: {fileID: 1457469941}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1457469940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457469939}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 503574638}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1457469941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457469939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a49c815d0b87d4bab7fc2d115f87c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryCellImage: {fileID: 2800000, guid: 18f129a5b7c1d9e4c8b2600afe0874cb, type: 3}
+  filledInventoryCellImage: {fileID: 2800000, guid: 3664508be89502a43b170e1730de57eb, type: 3}
+  clickToDrop: {fileID: 503574641}
+  inventoryBehavior: {fileID: 1636773441}
+  mouseOverGuiElementHandler: {fileID: 503574642}
 --- !u!1 &1636773434 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100024, guid: 1bc803c4bf46dcc48b0d9035951ec07a, type: 3}
@@ -955,6 +1017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1636773436}
+  mouseOverGuiElementHandler: {fileID: 503574642}
   moveAnimationClip: {fileID: 6200578666267062213, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
   standAnimationClip: {fileID: -5252816984213320552, guid: 86c591ebd74142c4d93243d9fa9544da, type: 3}
   clickToAttack: {fileID: 1636773439}

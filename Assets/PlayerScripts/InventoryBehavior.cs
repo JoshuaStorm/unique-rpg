@@ -1,4 +1,5 @@
-﻿using PlayerScripts.Internal;
+﻿using Assets.Utilities;
+using PlayerScripts.Internal;
 using UnityEngine;
 
 public partial class InventoryBehavior : MonoBehaviour
@@ -20,11 +21,14 @@ public partial class InventoryBehavior : MonoBehaviour
         
     }
 
-    public void PickupItem(string standinItemName)
+    public void PickupItem(ItemAttributes itemAttributes)
     {
-        var width = 1;
-        var height = 3;
-        this.inventoryMatrix.TryPlaceItemAnywhere(width, height, standinItemName);
+        this.inventoryMatrix.TryPlaceItemAnywhere(itemAttributes);
+    }
+
+    public IOptional<ItemAttributes> TakeItemInCell(int i, int j)
+    {
+        return this.inventoryMatrix.TakeItemInCell(i, j);
     }
 
     public bool ContainsItemInCell(int i, int j)

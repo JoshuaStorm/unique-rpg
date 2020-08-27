@@ -15,7 +15,6 @@ namespace PlayerScripts.Internal
                 inventoryCells.Add(new InventoryCell());
             }
             this.inventoryCells = inventoryCells;
-            UnityEngine.Debug.Log($"Made row with {this.inventoryCells.Count} cells");
         }
 
         public bool IsCellEmpty(int x)
