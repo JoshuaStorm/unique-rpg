@@ -2,6 +2,7 @@
 
 public class ItemAttributes : MonoBehaviour
 {
+    public GameObject itemGameObject;
     public Texture2D ItemTexture;
     public string ItemName;
     public int Height;
