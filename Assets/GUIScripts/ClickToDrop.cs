@@ -35,12 +35,10 @@ public class ClickToDrop : MonoBehaviour
     public void DropItemInHand()
     {
         var itemAttribute = this.itemInHand.GetValue();
-        
 
         const int RaycastLength = 1000; // Arbitrary number that is just sufficiently large to hit anything within screen
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        // TODO: I gotta do something about this cus when the ray hits the player you just kinda don't move (or attack an enemy just beyond the player)
+        // Drop the item at the players location plus a little bit of fudge factor based on where you're pointing.
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, RaycastLength))
         {

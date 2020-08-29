@@ -32,6 +32,6 @@ public class PickupBehavior : MonoBehaviour
         var itemAttributes = this.itemAttributes;
         this.gameObject.SetActive(false);
         this.playerCharacterClickToPickup.SetTarget(null); 
-        return itemAttributes; // XXX: maybe this just returns null due to destroying the game object?
+        return itemAttributes;
     }
 }
