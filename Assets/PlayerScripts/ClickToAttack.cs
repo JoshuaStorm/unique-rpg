@@ -28,16 +28,17 @@ public class ClickToAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) 
-            && this.HasTargetWithinRange()
-            && !this.IsAttacking())
-        {
-            this.Attack();
-        }
-
         if (this.IsAttacking() && this.HasSurpassedProcTime() && !this.hasAttackProced)
         {
             this.HitTarget();
+        }
+    }
+
+    public void HandleLeftClick()
+    {
+        if (this.HasTargetWithinRange() && !this.IsAttacking())
+        {
+            this.Attack();
         }
     }
 

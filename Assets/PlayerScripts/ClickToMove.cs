@@ -24,31 +24,29 @@ public class ClickToMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!this.mouseOverGuiElementHandler.IsMouseOverGuiElement() // Don't update move position if we're in inventory
-            && Input.GetMouseButton(0))
-        {
-            this.UpdateTerminalPosition();
-        }
-
         this.LookAtTerminalPosition();
-
         if (Vector3.Distance(this.transform.position, this.terminalPosition) > this.TerminalPositionTolerance)
         {
             this.MoveTowardTerminalPosition();
         }
-        else if (!this.clickToAttack.IsAttacking())
+        else if (!this.clickToAttack.IsAttacking()) // Can I avoid needing to attack clickToAttack here?
         {
             this.Idle();
         } 
     }
 
-    void Idle()
+    public void HandleLeftClick()
+    {
+        this.UpdateTerminalPosition();
+    }
+
+    private void Idle()
     {
         var animation = this.characterController.GetComponent<Animation>();
         animation.CrossFade(this.standAnimationClip.name);
     }
 
-    void LookAtTerminalPosition()
+    private void LookAtTerminalPosition()
     {
         var targetLocation = this.terminalPosition - this.transform.position;
         if (!targetLocation.Equals(Vector3.zero))
@@ -66,14 +64,14 @@ public class ClickToMove : MonoBehaviour
         return quaternion;
     }
 
-    void MoveTowardTerminalPosition()
+    private void MoveTowardTerminalPosition()
     {
         var animation = this.characterController.GetComponent<Animation>();
         animation.CrossFade(this.moveAnimationClip.name);
         this.characterController.SimpleMove(this.transform.forward * this.speed);
     }
 
-    void UpdateTerminalPosition()
+    private void UpdateTerminalPosition()
     {
         const int RaycastLength = 1000; // Arbitrary number that is just sufficiently large to hit anything within screen
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);

@@ -29,15 +29,6 @@ public class InventoryGui : MonoBehaviour
             }
             this.isInventoryOpen = !this.isInventoryOpen;
         }
-
-        if (this.isInventoryOpen)
-        {
-            var isMouseInInventory = this.DetectMouseInInventory();
-            if (isMouseInInventory && Input.GetMouseButton(0))
-            {
-                this.HandleMouseClickInInventory();
-            }
-        }
     }
 
     // OnGUI sometimes called more than once a frame, so shouldn't check clicks in it
@@ -49,8 +40,9 @@ public class InventoryGui : MonoBehaviour
         }
     }
 
-    private void HandleMouseClickInInventory()
+    public void HandleLeftClick()
     {
+        AssertMouseOverInventory();
         var x = this.GetCellColumnMouseIsOverUnsafe();
         var y = this.GetCellRowMouseIsOverUnsafe();
         var item = this.inventoryBehavior.TakeItemInCell(x, y);
@@ -61,6 +53,38 @@ public class InventoryGui : MonoBehaviour
         else
         {
             Debug.Log($"Took item from ({x},{y}) had no value");
+        }
+    }
+
+    public bool IsMouseOverInventory()
+    {
+        if (!this.isInventoryOpen)
+        {
+            this.mouseOverGuiElementHandler.SetMouseExitGuiElement();
+            return false;
+        }
+
+        var mouseX = GuiSpaceMousePosition.GetMouseX();
+        var mouseY = GuiSpaceMousePosition.GetMouseY();
+        var mouseWithinXBounds = mouseX >= this.GetStartingX() && mouseX < this.GetEndX();
+        var mouseWithinYBounds = mouseY >= this.GetStartingY() && mouseY < this.GetEndY();
+        if (mouseWithinXBounds && mouseWithinYBounds)
+        {
+            this.mouseOverGuiElementHandler.SetMouseIsOverGuiElement();
+            return true;
+        }
+        else
+        {
+            this.mouseOverGuiElementHandler.SetMouseExitGuiElement();
+            return false;
+        }
+    }
+
+    private void AssertMouseOverInventory()
+    {
+        if (!this.IsMouseOverInventory())
+        {
+            throw new ApplicationException($"Called function that assumed mouse is over inventory, but it was not");
         }
     }
 
@@ -77,24 +101,6 @@ public class InventoryGui : MonoBehaviour
         var rawRowNumber =  Convert.ToInt32((GuiSpaceMousePosition.GetMouseY() - this.GetStartingY() - this.GetCellWidth() / 2.0) / this.GetCellWidth());
         // Clamp down to avoid indexing issues from hitting around the last pixel
         return Math.Min(rawRowNumber, this.inventoryBehavior.GetInventoryHeight() - 1);
-    }
-
-    private bool DetectMouseInInventory()
-    {
-        var mouseX = GuiSpaceMousePosition.GetMouseX();
-        var mouseY = GuiSpaceMousePosition.GetMouseY();
-        var mouseWithinXBounds = mouseX >= this.GetStartingX() && mouseX < this.GetEndX();
-        var mouseWithinYBounds = mouseY >= this.GetStartingY() && mouseY < this.GetEndY();
-        if (mouseWithinXBounds && mouseWithinYBounds)
-        {
-            this.mouseOverGuiElementHandler.SetMouseIsOverGuiElement();
-            return true;
-        }
-        else
-        {
-            this.mouseOverGuiElementHandler.SetMouseExitGuiElement();
-            return false;
-        }
     }
 
     private void DrawInventory()
