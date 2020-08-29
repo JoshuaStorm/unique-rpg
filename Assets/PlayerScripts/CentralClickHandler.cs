@@ -35,6 +35,12 @@ public class CentralClickHandler : MonoBehaviour
             this.inventoryGui.HandleLeftClick();
             return;
         }
+        if (this.clickToDrop.IsItemInHand())
+        {
+            this.clickToDrop.DropItemInHand();
+            return;
+        }
+
         this.clickToMove.HandleLeftClick();
         this.clickToPickup.HandleLeftClick();
         this.clickToAttack.HandleLeftClick();

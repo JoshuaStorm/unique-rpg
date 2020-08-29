@@ -30,7 +30,8 @@ public class PickupBehavior : MonoBehaviour
     public ItemAttributes Pickup()
     {
         var itemAttributes = this.itemAttributes;
-        Destroy(this.gameObject);
-        return itemAttributes; // XXX: maybe this just returns null due to destroying the game object?
+        this.gameObject.SetActive(false);
+        this.playerCharacterClickToPickup.SetTarget(null); 
+        return itemAttributes;
     }
 }
