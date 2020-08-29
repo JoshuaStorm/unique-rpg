@@ -22,8 +22,15 @@ public class ClickToDrop : MonoBehaviour
         Cursor.SetCursor(itemAttributes.ItemTexture, Vector2.zero, CursorMode.Auto);
     }
 
+    public bool IsItemInHand()
+    {
+        return this.itemInHand != null;
+    }
+
     public void DropItemInHand()
     {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        this.itemInHand = null;
         // TODO: I think I need to centralize my click behavior. It's getting cumbersome to check everywhere what state the click is in
     }
 }

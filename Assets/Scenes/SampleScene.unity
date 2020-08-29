@@ -1102,3 +1102,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d423153c961e7364c901fcd04cbce0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1636773443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636773434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cad064c90b6640a478a3315de5200d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverGuiElementHandler: {fileID: 503574642}
+  inventoryGui: {fileID: 1457469941}
+  clickToAttack: {fileID: 1636773439}
+  clickToMove: {fileID: 1636773435}
+  clickToPickup: {fileID: 1636773440}
+  clickToDrop: {fileID: 503574641}

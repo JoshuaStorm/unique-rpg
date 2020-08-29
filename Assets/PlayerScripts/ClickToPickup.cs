@@ -17,13 +17,15 @@ public class ClickToPickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)
-            && this.HasTargetWithinRange())
+        // TODO: need to make move toward toward item
+    }
+
+    public void HandleLeftClick()
+    {
+        if (this.HasTargetWithinRange())
         {
             this.Pickup();
         }
-
-        // TODO: need to make move toward toward item
     }
 
     public void SetTarget(PickupBehavior target)
