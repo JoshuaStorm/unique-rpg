@@ -1,5 +1,7 @@
 ﻿using Assets.Utilities;
+using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ClickToDrop : MonoBehaviour
 {
@@ -22,18 +24,26 @@ public class ClickToDrop : MonoBehaviour
     public void SetItemInHand(ItemAttributes itemAttributes)
     {
         this.itemInHand = Optional.Some(itemAttributes);
-        Debug.Log($"Set Item in hand = {itemAttributes.ItemName}");
         Cursor.SetCursor(itemAttributes.ItemTexture, Vector2.zero, CursorMode.Auto);
+    }
+    
+    public ItemAttributes RemoveItemInHand()
+    {
+        AssertItemInHand();
+        var returnItem = this.itemInHand.GetValue();
+        this.itemInHand = Optional.None<ItemAttributes>("Removed item in hand to place in inventory");
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        return returnItem;
     }
 
     public bool IsItemInHand()
     {
-        Debug.Log($"Holding item? {this.itemInHand.HasValue()}");
         return this.itemInHand.HasValue();
     }
 
     public void DropItemInHand()
     {
+        AssertItemInHand();
         var itemAttribute = this.itemInHand.GetValue();
 
         const int RaycastLength = 1000; // Arbitrary number that is just sufficiently large to hit anything within screen
@@ -42,7 +52,6 @@ public class ClickToDrop : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, RaycastLength))
         {
-            Debug.Log("Dropping item in hand");
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             this.itemInHand = Optional.None<ItemAttributes>("Dropped item in hand");
 
@@ -53,6 +62,14 @@ public class ClickToDrop : MonoBehaviour
             var dropLocationZ = this.dropDistance * (raycastLocation.z - this.playerCharacter.transform.position.z) / raycastMagnitude + this.playerCharacter.transform.position.z;
             itemAttribute.itemGameObject.SetActive(true);
             itemAttribute.itemGameObject.transform.position = new Vector3(dropLocationX, dropLocationY, dropLocationZ);
+        }
+    }
+
+    private void AssertItemInHand()
+    {
+        if (!this.itemInHand.HasValue())
+        {
+            throw new ApplicationException("Called function that assumes ItemInHand has value but there was no ItemInHand");
         }
     }
 }
