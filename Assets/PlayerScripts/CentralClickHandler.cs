@@ -30,12 +30,15 @@ public class CentralClickHandler : MonoBehaviour
 
     private void HandleLeftClick()
     {
-        if (this.inventoryGui.IsMouseOverInventory())
+        var isMouseOverIntentory = this.inventoryGui.IsMouseOverInventory();
+        var isItemInHand = this.clickToDrop.IsItemInHand();
+
+        if (isMouseOverIntentory)
         {
-            this.inventoryGui.HandleLeftClick();
+            this.inventoryGui.HandleLeftClick(isItemInHand);
             return;
         }
-        if (this.clickToDrop.IsItemInHand())
+        if (isItemInHand)
         {
             this.clickToDrop.DropItemInHand();
             return;

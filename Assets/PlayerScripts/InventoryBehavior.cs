@@ -26,6 +26,11 @@ public partial class InventoryBehavior : MonoBehaviour
         this.inventoryMatrix.TryPlaceItemAnywhere(itemAttributes);
     }
 
+    public void PlaceItem(int i, int j, ItemAttributes itemAttributes)
+    {
+        this.inventoryMatrix.TryPlaceItem(i, j, itemAttributes);
+    }
+
     public IOptional<ItemAttributes> TakeItemInCell(int i, int j)
     {
         return this.inventoryMatrix.TakeItemInCell(i, j);
@@ -34,6 +39,11 @@ public partial class InventoryBehavior : MonoBehaviour
     public bool ContainsItemInCell(int i, int j)
     {
         return !this.inventoryMatrix.IsCellEmpty(i, j);
+    }
+
+    public bool DoesItemFit(int i, int j, ItemAttributes itemAttributes)
+    {
+        return this.inventoryMatrix.DoesItemFit(i, j, itemAttributes);
     }
 
     public int GetInventoryWidth()

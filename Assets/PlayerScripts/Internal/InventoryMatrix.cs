@@ -29,7 +29,7 @@ namespace PlayerScripts.Internal
             this.AssertValidRow(x, y);
             var width = itemAttributes.Width;
             var height = itemAttributes.Height;
-            if (x + width > this.maxWidth || y + height >= this.maxHeight) 
+            if (x + width > this.maxWidth || y + height > this.maxHeight) 
             {
                 return false;
             }

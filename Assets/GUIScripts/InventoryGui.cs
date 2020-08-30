@@ -40,19 +40,42 @@ public class InventoryGui : MonoBehaviour
         }
     }
 
-    public void HandleLeftClick()
+    public void HandleLeftClick(bool isItemInHand)
     {
         AssertMouseOverInventory();
+        if (isItemInHand)
+        {
+            this.HandleLeftClickWithItemInHandUnsafe();
+        }
+        else
+        {
+            this.HandleLeftClickItemInInventoryUnsafe();
+        }
+    }
+
+    private void HandleLeftClickWithItemInHandUnsafe()
+    {
+        var x = this.GetCellColumnMouseIsOverUnsafe();
+        var y = this.GetCellRowMouseIsOverUnsafe();
+        var itemInHand = this.clickToDrop.RemoveItemInHand();
+        if (this.inventoryBehavior.DoesItemFit(x, y, itemInHand))
+        {
+            this.inventoryBehavior.PlaceItem(x, y, itemInHand);
+        }
+        else
+        {
+            this.clickToDrop.SetItemInHand(itemInHand);
+        }
+    }
+
+    private void HandleLeftClickItemInInventoryUnsafe()
+    {
         var x = this.GetCellColumnMouseIsOverUnsafe();
         var y = this.GetCellRowMouseIsOverUnsafe();
         var item = this.inventoryBehavior.TakeItemInCell(x, y);
         if (item.HasValue())
         {
             this.clickToDrop.SetItemInHand(item.GetValue());
-        }
-        else
-        {
-            Debug.Log($"Took item from ({x},{y}) had no value");
         }
     }
 
